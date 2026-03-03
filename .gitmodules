@@ -1,18 +1,18 @@
 [submodule "frontend"]
 	path = frontend
-	url = ./frontend
+	url = https://github.com/AmeyGirkar/frontend.git
 [submodule "orders-service"]
 	path = orders-service
-	url = ./orders-service
+	url = https://github.com/AmeyGirkar/orders-service.git
 [submodule "checkout-service"]
 	path = checkout-service
-	url = ./checkout-service
+	url = https://github.com/AmeyGirkar/checkout-service.git
 [submodule "cart-service"]
 	path = cart-service
-	url = ./cart-service
+	url = https://github.com/AmeyGirkar/cart-service.git
 [submodule "catalog-service"]
 	path = catalog-service
-	url = ./catalog-service
+	url = https://github.com/AmeyGirkar/catalog-service.git
 [submodule "helm-charts"]
 	path = helm-charts
-	url = ./helm-charts
+	url = https://github.com/AmeyGirkar/helm-charts.git
