@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -20,12 +22,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd checkout-service
+        cd ${{ github.workspace }}/checkout-service
         npm install
 
     - name: Build Docker image
       run: |
-        cd checkout-service
+        cd ${{ github.workspace }}/checkout-service
         docker build -t mega-project/checkout-service:${{ github.sha }} .
 
   deploy-dry-run:
@@ -33,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     - name: Helm Lint and Dry-run
       run: |
         helm lint helm-charts/checkout-service

@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -20,12 +22,12 @@ jobs:
 
     - name: Build
       run: |
-        cd catalog-service
+        cd ${{ github.workspace }}/catalog-service
         go build -v ./...
 
     - name: Build Docker image
       run: |
-        cd catalog-service
+        cd ${{ github.workspace }}/catalog-service
         docker build -t mega-project/catalog-service:${{ github.sha }} .
 
   deploy-dry-run:
@@ -33,6 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     - name: Helm Lint and Dry-run
       run: |
         helm lint helm-charts/catalog-service

@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -20,13 +22,13 @@ jobs:
 
     - name: Install dependencies and Build
       run: |
-        cd frontend
+        cd ${{ github.workspace }}/frontend
         npm install
         npm run build
 
     - name: Build Docker image
       run: |
-        cd frontend
+        cd ${{ github.workspace }}/frontend
         docker build -t mega-project/frontend:${{ github.sha }} .
 
   deploy-dry-run:
@@ -34,6 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     - name: Helm Lint and Dry-run
       run: |
         helm lint helm-charts/frontend
