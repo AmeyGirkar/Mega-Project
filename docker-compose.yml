@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - orders-service
+      - checkout-service
+      - cart-service
+      - catalog-service
+
+  orders-service:
+    build: ./orders-service
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_URL=postgresql://user:pass@orders-db:5432/orders
+    depends_on:
+      - orders-db
+
+  checkout-service:
+    build: ./checkout-service
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_URL=redis://checkout-redis:6379
+    depends_on:
+      - checkout-redis
+
+  cart-service:
+    build: ./cart-service
+    ports:
+      - "8080:8080"
+    environment:
+      - AWS_ENDPOINT=http://cart-dynamodb:8000
+    depends_on:
+      - cart-dynamodb
+
+  catalog-service:
+    build: ./catalog-service
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_URL=user:pass@tcp(catalog-db:3306)/catalog
+    depends_on:
+      - catalog-db
+
+  # Databases
+  orders-db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: orders
+
+  checkout-redis:
+    image: redis:alpine
+
+  cart-dynamodb:
+    image: amazon/dynamodb-local
+
+  catalog-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: catalog

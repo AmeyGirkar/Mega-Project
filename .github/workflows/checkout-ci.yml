@@ -1,0 +1,38 @@
+name: Checkout Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'checkout-service/**'
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        cd checkout-service
+        npm install
+
+    - name: Build Docker image
+      run: |
+        cd checkout-service
+        docker build -t mega-project/checkout-service:${{ github.sha }} .
+
+  deploy-dry-run:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Helm Lint and Dry-run
+      run: |
+        helm lint helm-charts/checkout-service
+        helm install checkout-service ./helm-charts/checkout-service --dry-run --debug

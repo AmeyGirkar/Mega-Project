@@ -1,0 +1,38 @@
+name: Catalog Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'catalog-service/**'
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+
+    - name: Build
+      run: |
+        cd catalog-service
+        go build -v ./...
+
+    - name: Build Docker image
+      run: |
+        cd catalog-service
+        docker build -t mega-project/catalog-service:${{ github.sha }} .
+
+  deploy-dry-run:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Helm Lint and Dry-run
+      run: |
+        helm lint helm-charts/catalog-service
+        helm install catalog-service ./helm-charts/catalog-service --dry-run --debug

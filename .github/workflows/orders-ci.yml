@@ -1,0 +1,38 @@
+name: Orders Service CI/CD
+
+on:
+  push:
+    paths:
+      - 'orders-service/**'
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        cd orders-service
+        pip install -r requirements.txt
+
+    - name: Build Docker image
+      run: |
+        cd orders-service
+        docker build -t mega-project/orders-service:${{ github.sha }} .
+
+  deploy-dry-run:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Helm Lint and Dry-run
+      run: |
+        helm lint helm-charts/orders-service
+        helm install orders-service ./helm-charts/orders-service --dry-run --debug

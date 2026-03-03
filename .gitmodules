@@ -1,0 +1,18 @@
+[submodule "frontend"]
+	path = frontend
+	url = ./frontend
+[submodule "orders-service"]
+	path = orders-service
+	url = ./orders-service
+[submodule "checkout-service"]
+	path = checkout-service
+	url = ./checkout-service
+[submodule "cart-service"]
+	path = cart-service
+	url = ./cart-service
+[submodule "catalog-service"]
+	path = catalog-service
+	url = ./catalog-service
+[submodule "helm-charts"]
+	path = helm-charts
+	url = ./helm-charts
