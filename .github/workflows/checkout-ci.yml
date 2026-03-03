@@ -5,6 +5,7 @@ on:
     paths:
       - 'checkout-service/**'
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-test:
