@@ -40,5 +40,6 @@ jobs:
         submodules: true
     - name: Helm Lint and Dry-run
       run: |
+        cd ${{ github.workspace }}
         helm lint helm-charts/frontend
         helm install frontend ./helm-charts/frontend --dry-run --debug

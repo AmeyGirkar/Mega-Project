@@ -38,5 +38,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Helm Lint and Dry-run
       run: |
+        cd ${{ github.workspace }}
         helm lint helm-charts/orders-service
         helm install orders-service ./helm-charts/orders-service --dry-run --debug

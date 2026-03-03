@@ -39,5 +39,6 @@ jobs:
         submodules: true
     - name: Helm Lint and Dry-run
       run: |
+        cd ${{ github.workspace }}
         helm lint helm-charts/catalog-service
         helm install catalog-service ./helm-charts/catalog-service --dry-run --debug

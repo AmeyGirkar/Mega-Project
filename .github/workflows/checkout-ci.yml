@@ -39,5 +39,6 @@ jobs:
         submodules: true
     - name: Helm Lint and Dry-run
       run: |
+        cd ${{ github.workspace }}
         helm lint helm-charts/checkout-service
         helm install checkout-service ./helm-charts/checkout-service --dry-run --debug
